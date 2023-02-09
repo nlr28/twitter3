@@ -9,19 +9,6 @@ import {Tweet} from "./share/model/tweet";
 export class AppComponent {
   title = 'twitter-web3';
 
-  public tweets: Tweet[] =[];
-
-  public constructor() {
-    let tweet = new Tweet(new Date(), "Hello World", "John Doe", 0, [], [], []);
-    this.tweets.push(tweet);
-    tweet = new Tweet(new Date(), "This is the second tweet", "John Doe", 0, [], [], []);
-    this.tweets.push(tweet);
-    tweet = new Tweet(new Date(), "This is the third tweet", "John Doe", 0, [], [], []);
-    this.tweets.push(tweet);
-    tweet = new Tweet(new Date(), "This is the fourth tweet", "John Doe", 0, [], [], []);
-    this.tweets.push(tweet);
-
-  }
 
 
 }
