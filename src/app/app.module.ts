@@ -7,6 +7,7 @@ import {TweetComponent} from "./share/tweetcomponent/tweet.componet";
 import { MainFeedComponent } from './main-feed/main-feed.component';
 import { ProfileComponent } from './profile/profile.component';
 import {TweetService} from "./share/tweetservice/tweet.service";
+import {NewTweetComponent} from "./share/newtweet/newtweet.component";
 
 @NgModule({
   declarations: [
@@ -14,6 +15,7 @@ import {TweetService} from "./share/tweetservice/tweet.service";
     TweetComponent,
     MainFeedComponent,
     ProfileComponent,
+    NewTweetComponent,
   ],
   imports: [
     BrowserModule,
