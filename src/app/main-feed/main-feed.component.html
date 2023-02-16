@@ -37,26 +37,6 @@
     </div>
 
     <!-- Tweets -->
-    <a href="#" class="block border-b border-gray-200 dark:border-gray-600 w-full px-4 py-3 transition hover:bg-gray-100 dark:hover:bg-white/5">
-        <div class="flex space-x-2 py-2">
-            <div class="w-14 shrink-0">
-                <img class="w-12 h-12 rounded-full" src="https://pbs.twimg.com/profile_images/1481281375835725825/rZzCEFm3_400x400.jpg">
-            </div>
-            <div class="flex-grow">
-                <p class="text-gray-600 dark:text-gray-400 font-normal text-sm"><span class="font-bold text-black dark:text-white text-base">Sean</span> @shornuk &middot; 2h</p>
-                <p class="text-[15px] dark:text-white">as a backend dev, I have the same joy when working with TailindCSS. It is a great way to catch up with new CSS features </p>
-            </div>
-            <div class="shrink-0">
-                <svg viewBox="0 0 24 24" class="w-5 h-5 fill-current"><g><circle cx="5" cy="12" r="2"></circle><circle cx="12" cy="12" r="2"></circle><circle cx="19" cy="12" r="2"></circle></g></svg>
-            </div>
-        </div>
-    </a>
+    <tweet [content]="item" *ngFor="let item of tweets"></tweet>
 
 
-
-<!--
-<div class="border-b pb-8">
-    forms and stuff
-</div>
-<tweet [content]="item" *ngFor="let item of tweets"></tweet>
--->
