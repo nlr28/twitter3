@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import {Tweet} from "../share/model/tweet";
+import {TweetService} from "../share/tweetservice/tweet.service";
 
 @Component({
   selector: 'app-main-feed',
@@ -10,16 +11,8 @@ export class MainFeedComponent {
 
   public tweets: Tweet[] =[];
 
-  public constructor() {
-    let tweet = new Tweet(new Date(), "Hello World", "John Doe", 0, [], [], []);
-    this.tweets.push(tweet);
-    tweet = new Tweet(new Date(), "This is the second tweet", "John Doe", 0, [], [], []);
-    this.tweets.push(tweet);
-    tweet = new Tweet(new Date(), "This is the third tweet", "John Doe", 0, [], [], []);
-    this.tweets.push(tweet);
-    tweet = new Tweet(new Date(), "This is the fourth tweet", "John Doe", 0, [], [], []);
-    this.tweets.push(tweet);
-
+  public constructor(public tweetService: TweetService) {
+    this.tweets = this.tweetService.getTweets();
   }
 
 
