@@ -1,6 +1,8 @@
 import {Injectable} from "@angular/core";
 import {Tweet} from "../model/tweet";
 import {Subject} from "rxjs";
+import {UserService} from "./user.service";
+import {User} from "../model/user";
 
 @Injectable()
 export class TweetService {
@@ -9,15 +11,20 @@ export class TweetService {
 
     protected tweets: any[] = [];
 
-    public constructor() {
-        let tweet = new Tweet(new Date(), "Hello World", "John Doe", 0, [], [], []);
-        this.tweets.push(tweet);
-        tweet = new Tweet(new Date(), "This is the second tweet", "John Doe", 0, [], [], []);
-        this.tweets.push(tweet);
-        tweet = new Tweet(new Date(), "This is the third tweet", "John Doe", 0, [], [], []);
-        this.tweets.push(tweet);
-        tweet = new Tweet(new Date(), "This is the fourth tweet", "John Doe", 0, [], [], []);
-        this.tweets.push(tweet);
+    public constructor(protected userService: UserService) {
+
+        let author: User | null = this.userService.getUser('@jondoe');
+
+        if(author != null) {
+            let tweet = new Tweet(new Date(), "Hello World", author, 0, [], [], []);
+            this.tweets.push(tweet);
+            tweet = new Tweet(new Date(), "This is the second tweet", author, 0, [], [], []);
+            this.tweets.push(tweet);
+            tweet = new Tweet(new Date(), "This is the third tweet", author, 0, [], [], []);
+            this.tweets.push(tweet);
+            tweet = new Tweet(new Date(), "This is the fourth tweet", author, 0, [], [], []);
+            this.tweets.push(tweet);
+        }
     }
 
     public publishTweet(tweet: Tweet): void {

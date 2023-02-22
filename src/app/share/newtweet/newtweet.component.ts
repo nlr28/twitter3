@@ -2,6 +2,7 @@ import {Component} from "@angular/core";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {TweetService} from "../tweetservice/tweet.service";
 import {Tweet} from "../model/tweet";
+import {UserService} from "../tweetservice/user.service";
 
 
 @Component({
@@ -15,6 +16,7 @@ export class NewTweetComponent {
 
     public constructor(
         public formBuilder: FormBuilder,
+        public userService: UserService,
         public tweetService: TweetService
     ) {
 
@@ -28,9 +30,12 @@ export class NewTweetComponent {
 
     public submit() {
         if(this.form.valid) {
-            let tweetcontent = this.form.get('tweetcontent')?.value;
-            let tweet = new Tweet(new Date(), tweetcontent, "John Doe");
-            this.tweetService.publishTweet(tweet);
+            let user= this.userService.getUser('@jondoe');
+            if(user != null) {
+                let tweetcontent = this.form.get('tweetcontent')?.value;
+                let tweet = new Tweet(new Date(), tweetcontent, user);
+                this.tweetService.publishTweet(tweet);
+            }
         }
     }
 

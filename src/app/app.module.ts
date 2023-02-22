@@ -9,6 +9,7 @@ import { ProfileComponent } from './profile/profile.component';
 import {TweetService} from "./share/tweetservice/tweet.service";
 import {NewTweetComponent} from "./share/newtweet/newtweet.component";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {UserService} from "./share/tweetservice/user.service";
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
     AppRoutingModule
   ],
   providers: [
-    TweetService
+    TweetService,
+    UserService,
   ],
   bootstrap: [AppComponent]
 })
