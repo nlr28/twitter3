@@ -3,6 +3,7 @@ import {Tweet} from "../model/tweet";
 import {Subject} from "rxjs";
 import {UserService} from "./user.service";
 import {User} from "../model/user";
+import {Web3Service} from "../web3service/web3.service";
 
 @Injectable()
 export class TweetService {
@@ -11,32 +12,28 @@ export class TweetService {
 
     protected tweets: any[] = [];
 
-    public constructor(protected userService: UserService) {
+    public constructor(protected userService: UserService,
+                       protected web3Service: Web3Service) {
 
-        let author: User | null = this.userService.getUser('@jondoe');
-
-        if(author != null) {
-            let tweet = new Tweet(new Date(), "Hello World", author, 0, [], [], []);
-            this.tweets.push(tweet);
-            tweet = new Tweet(new Date(), "This is the second tweet", author, 0, [], [], []);
-            this.tweets.push(tweet);
-            tweet = new Tweet(new Date(), "This is the third tweet", author, 0, [], [], []);
-            this.tweets.push(tweet);
-            tweet = new Tweet(new Date(), "This is the fourth tweet", author, 0, [], [], []);
-            this.tweets.push(tweet);
-        }
     }
 
-    public publishTweet(tweet: Tweet): void {
+    public async publishTweet(tweet: Tweet): Promise<void> {
         //append the tweet at the very beginning of this.tweet array:
-        this.tweets.unshift(tweet);
+        await this.web3Service.publishTweet(tweet);
         this.newTweets$.next(true);
     }
 
-    public getTweets(): Tweet[] {
+    public async getTweets(): Promise<Tweet[]> {
+
         let returnValue: Tweet[] = [];
-        this.tweets.forEach(tweet => {
-            returnValue.push(tweet);
+        let user = this.userService.getUser("@jondoe");
+        let tweets = await this.web3Service.getAllTweets();
+        console.log(tweets);
+        tweets.forEach((tweetData: any) => {
+            if(user != null) {
+                let tweet = new Tweet(new Date(), tweetData.tweetText, user);
+                returnValue.push(tweet);
+            }
         });
         return returnValue;
 

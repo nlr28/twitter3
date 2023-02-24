@@ -16,10 +16,13 @@ export class MainFeedComponent implements OnDestroy {
   public subscription: Subscription = new Subscription();
 
   public constructor(public tweetService: TweetService) {
-    this.tweets = this.tweetService.getTweets();
 
-    this.subscription = this.tweetService.newTweets$.subscribe(() => {
-      this.tweets = this.tweetService.getTweets();
+    this.tweetService.getTweets().then((tweets: Tweet[]) => {
+        this.tweets = tweets;
+    });
+
+    this.subscription = this.tweetService.newTweets$.subscribe(async () => {
+      this.tweets = await this.tweetService.getTweets();
     });
 
   }
