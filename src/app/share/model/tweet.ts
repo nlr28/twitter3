@@ -9,16 +9,18 @@ export class Tweet {
   public likes: number;
   public retweets: Tweet[];
   public replies: Tweet[];
-  public images: string[];
+  public image: string;
 
-  constructor(date: Date, message: string, author: User, likes: number = 0, retweets: Tweet[] = [], replies: Tweet[] = [], images: string[] = []) {
+  public imageBuffer: any = null;
+
+  constructor(date: Date, message: string, author: User, likes: number = 0, retweets: Tweet[] = [], replies: Tweet[] = [], image  = "") {
     this.date = date;
     this.message = message;
     this.author = author;
     this.likes = likes;
     this.retweets = retweets;
     this.replies = replies;
-    this.images = images;
+    this.image = image;
   }
 
 }

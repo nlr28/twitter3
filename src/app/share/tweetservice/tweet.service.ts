@@ -15,12 +15,15 @@ export class TweetService {
     public constructor(protected userService: UserService,
                        protected web3Service: Web3Service) {
 
+        this.web3Service.newTweet$.subscribe(async () => {
+            this.newTweets$.next(true);
+        });
+
     }
 
     public async publishTweet(tweet: Tweet): Promise<void> {
         //append the tweet at the very beginning of this.tweet array:
         await this.web3Service.publishTweet(tweet);
-        this.newTweets$.next(true);
     }
 
     public async getTweets(): Promise<Tweet[]> {
@@ -32,6 +35,7 @@ export class TweetService {
         tweets.forEach((tweetData: any) => {
             if(user != null) {
                 let tweet = new Tweet(new Date(), tweetData.tweetText, user);
+                tweet.image = tweetData.tweetImage;
                 returnValue.push(tweet);
             }
         });
