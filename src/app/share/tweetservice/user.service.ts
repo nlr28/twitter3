@@ -1,22 +1,54 @@
 import {Injectable} from "@angular/core";
 import {User} from "../model/user";
+import {Web3Service} from "../web3service/web3.service";
+import {Subject} from "rxjs";
 
 @Injectable()
 export class UserService {
 
-    protected users: User[] = [];
+    public anonymousUser = new User('Jhon Doe', '', 'https://pbs.twimg.com/profile_images/1481281375835725825/rZzCEFm3_400x400.jpg');
 
-    public constructor() {
-        let user = new User('@jondoe', 'Jhon Doe', 'https://pbs.twimg.com/profile_images/1481281375835725825/rZzCEFm3_400x400.jpg');
-        this.users.push(user);
+    protected userInSession: any;
+
+    public userInSessionChanged$ = new Subject();
+
+    public constructor(protected web3Service: Web3Service) {
+        this.userInSession = this.anonymousUser; //by default;
+        this.web3Service.status$.subscribe(async (status) => {
+            if(status == true) {
+                this.userInSession = this.buildUser(await this.web3Service.getUserInSession());
+            }
+            else {
+                this.userInSession = this.anonymousUser;
+            }
+            this.userInSessionChanged$.next(this.userInSession);
+        });
     }
 
-    public getUser(id: string): User | null {
-        let user = this.users.filter(user => user.id === id);
-        if(user.length > 0) {
-            return user[0];
+    public async updateUser(user: User): Promise<void> {
+        await this.web3Service.updateUser(user);
+    }
+
+    public async getUser(address: string) {
+        let user = this.anonymousUser; //by default
+        try {
+            user = this.buildUser(await this.web3Service.getUser(address));
         }
-        return null;
+        catch(error) {
+            //nothing
+        }
+        return user;
+    }
+
+    public buildUser(userFromWeb3: any) {
+        let user = new User(userFromWeb3.name,
+                            userFromWeb3.bio,
+                      'https://mysupercoolipfs.infura-ipfs.io/ipfs/' + userFromWeb3.avatar);
+        return user;
+    }
+
+    public getUserInSession() {
+        return this.userInSession;
     }
 
 

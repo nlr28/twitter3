@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {TweetService} from "../tweetservice/tweet.service";
 import {Tweet} from "../model/tweet";
 import {UserService} from "../tweetservice/user.service";
+import {User} from "../model/user";
 
 declare let window: any;
 
@@ -15,7 +16,9 @@ export class NewTweetComponent {
 
     public form: FormGroup;
 
-    public image: any = null
+    public image: any = null;
+
+    public userInSession: any;
 
     @ViewChild('fileInput') fileInput!: ElementRef;
 
@@ -25,34 +28,37 @@ export class NewTweetComponent {
         public tweetService: TweetService
     ) {
 
+        this.userInSession = this.userService.anonymousUser;
+
+        this.userService.userInSessionChanged$.subscribe(userInSession => {
+            this.userInSession = userInSession;
+        })
+
         this.form = this.formBuilder.group({
             tweetcontent: [null, [
                 Validators.max(140)]]
         });
 
-
     }
 
     public submit() {
         if(this.form.valid) {
-            let user= this.userService.getUser('@jondoe');
-            if(user != null) {
-                let tweetcontent = this.form.get('tweetcontent')?.value;
-                let tweet = new Tweet(new Date(), tweetcontent, user);
-                if(this.image != null) {
-                    const reader = new window.FileReader();
-                    reader.readAsArrayBuffer(this.image);
-                    reader.onloadend = () => {
-                        window.Buffer = require('buffer/').Buffer;
-                        tweet.imageBuffer = window.Buffer(reader.result);
-                        this.tweetService.publishTweet(tweet);
-                    }
-                }
-                else {
+            let tweetcontent = this.form.get('tweetcontent')?.value;
+            let tweet = new Tweet();
+            tweet.message = tweetcontent;
+            if(this.image != null) {
+                const reader = new window.FileReader();
+                reader.readAsArrayBuffer(this.image);
+                reader.onloadend = () => {
+                    window.Buffer = require('buffer/').Buffer;
+                    tweet.imageBuffer = window.Buffer(reader.result);
                     this.tweetService.publishTweet(tweet);
                 }
-                this.form.reset();
             }
+            else {
+                this.tweetService.publishTweet(tweet);
+            }
+            this.form.reset();
         }
     }
 

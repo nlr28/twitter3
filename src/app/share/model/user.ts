@@ -3,16 +3,6 @@ import {Tweet} from "./tweet";
 
 export class User {
 
-    protected _id: string;
-
-    set id(value: any) {
-        this._id = value;
-    }
-
-    get id(): any {
-        return this._id;
-    }
-
     protected _name: string;
 
     set name(value: any) {
@@ -23,29 +13,42 @@ export class User {
         return this._name;
     }
 
-    protected _picture: string;
+    protected _avatar: string;
 
-    set picture(value: any) {
-        this._picture = value;
+    set avatar(value: any) {
+        this._avatar = value;
     }
 
-    get picture(): any {
-        return this._picture;
+    get avatar(): any {
+        return this._avatar;
     }
 
-    protected tweets: Tweet[];
+    protected _bio: string;
 
-    protected followers: User[];
+    set bio(value: any) {
+        this._bio = value;
+    }
 
-    protected following: User[];
+    get bio(): any {
+        return this._bio;
+    }
 
-    public constructor(id: string, name: string, picture: string) {
-        this._id = id;
+    protected _address: string|null = null;
+
+    set address(value: any) {
+        this._address = value;
+    }
+
+    get address(): any {
+        return this._address;
+    }
+
+    public avatarBuffer: any = null;
+
+    public constructor(name: string, bio: string, avatar: string) {
         this._name = name;
-        this._picture = picture;
-        this.tweets = [];
-        this.followers = [];
-        this.following = [];
+        this._bio = bio;
+        this._avatar = avatar;
     }
 
 

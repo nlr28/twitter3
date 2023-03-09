@@ -1,6 +1,6 @@
 <div class="pt-4 flex">
     <div class="w-14 shrink-0">
-        <img class="w-12 h-12 rounded-full" src="https://pbs.twimg.com/profile_images/1481281375835725825/rZzCEFm3_400x400.jpg">
+        <img class="w-12 h-12 rounded-full" [src]="userInSession?.avatar">
     </div>
     <div class="w-full pl-2">
         <form [formGroup]="this.form">
