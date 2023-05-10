@@ -1,0 +1,46 @@
+<!--<div class="relative max-w-md mx-auto md:max-w-2xl mt-6 min-w-0 break-words bg-white h-full w-full mb-6 shadow-lg rounded-xl mt-16">-->
+    <div class="bg-white">
+
+    <div style="padding-top: 10px">
+        <div class="flex flex-wrap justify-center">
+            <div class="w-full flex justify-center">
+                <div class="relative">
+                    <input type="file" class="file-input" #fileInput (change)="onFileSelected($event)">
+                    <a href="javascript:void(null)" (click)="fileInput.click()">
+                        <div style="height:9rem; width:9rem;" class="md rounded-full relative avatar">
+                            <img style="height:9rem; width:9rem;" class="md rounded-full relative border-4 border-gray-900" [src]="data?.avatar">
+                            <div class="absolute"></div>
+                        </div>
+                    </a>
+
+                </div>
+            </div>
+
+        </div>
+        <div class="text-center mt-2">
+            <input class="text-2xl text-slate-700 font-bold leading-normal mb-1" [(ngModel)]="data.name">
+            <div class="text-xs mt-0 mb-2 text-slate-400 font-bold uppercase">
+                <p>                <i class="fas fa-map-marker-alt mr-2 text-slate-400 opacity-75"></i>{{data.address}}
+                </p>
+
+            </div>
+        </div>
+        <div class="mt-6 py-6 border-t border-slate-200 text-center">
+            <div class="flex flex-wrap ">
+                <div class="w-full px-4 justify-center">
+                    <input class="font-light leading-relaxed text-slate-600 mb-4" [(ngModel)]="data.bio">
+                </div>
+                <div class="w-full px-4 justify-center">
+                    <button  (click)="onNoClick()"  cdkFocusInitial style="float: left; background-color: white; font-size: 16px; margin-right: 6mm;"
+                            class="relative w-20 h-8 rounded-full flex items-center justify-center border-2">Close</button>
+
+                <button [mat-dialog-close]="data" cdkFocusInitial style="float: right; background-color: white; font-size: 16px; margin-right: 6mm;"
+                        class="relative w-20 h-8 rounded-full flex items-center justify-center border-2">Save</button>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+

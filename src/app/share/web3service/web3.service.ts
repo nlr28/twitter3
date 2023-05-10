@@ -13,8 +13,8 @@ declare let window: any;
 @Injectable()
 export class Web3Service {
 
-    protected infuraProjectId = "xxx";
-    protected infuraProjectSecret = "xxx";
+    protected infuraProjectId = "2MQhBSXzN9jeVnjfQ7geHJOlhdP";
+    protected infuraProjectSecret = "75e3e955a15463e6c7135d3296ba0d51";
 
     protected contractAddress = "0x2BEC0f98C63474786389Cd7D149C153ea638CaF6";
 
@@ -24,11 +24,13 @@ export class Web3Service {
 
     protected contractInstance: any;
 
-    protected account: string = "";
+    public account: string = "";
 
     public newTweet$ = new Subject<any>();
 
     public status$ = new Subject<boolean>();
+    public userConected$ = new Subject<boolean>();
+
 
     public constructor() {
 
@@ -76,16 +78,29 @@ export class Web3Service {
 
     public async updateUser(user: User) {
 
+        let gas;
+        let gasPrice;
+
+        let encodedABI;
+
         if(user.avatarBuffer != null) {
+            console.log("avatar buffer not null");
             //upload to IPFS
             const file = await this.ipfsClient.add(user.avatarBuffer);
             user.avatar = file.path;
+
+            gas = await this.contractInstance.methods.updateUser(user.name, user.bio, user.avatar).estimateGas({from: this.account});
+            gasPrice = await this.web3.eth.getGasPrice();
+
+            encodedABI = this.contractInstance.methods.updateUser(user.name, user.bio, user.avatar).encodeABI();
+        } else {
+            gas = await this.contractInstance.methods.updateUser(user.name, user.bio).estimateGas({from: this.account});
+            gasPrice = await this.web3.eth.getGasPrice();
+
+            encodedABI = this.contractInstance.methods.updateUser(user.name, user.bio).encodeABI();
         }
 
-        let gas = await this.contractInstance.methods.updateUser(user.name, user.bio, user.avatar).estimateGas({from: this.account});
-        let gasPrice = await this.web3.eth.getGasPrice();
 
-        let encodedABI = this.contractInstance.methods.updateUser(user.name, user.bio, user.avatar).encodeABI();
 
         let tx: any = {
             to: this.contractAddress,
@@ -121,6 +136,7 @@ export class Web3Service {
     }
 
     public async getUserInSession() {
+        console.log(this.account);
         return await this.getUser(this.account);
     }
 
@@ -158,6 +174,8 @@ export class Web3Service {
             this.account = accounts[0];
             console.log(this.account);
             this.status$.next(true);
+            this.userConected$.next(true);
+
         }
     }
 

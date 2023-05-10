@@ -6,7 +6,7 @@ import {Subject} from "rxjs";
 @Injectable()
 export class UserService {
 
-    public anonymousUser = new User('Jhon Doe', '', 'https://pbs.twimg.com/profile_images/1481281375835725825/rZzCEFm3_400x400.jpg');
+    public anonymousUser = new User('Annon', '', 'https://www.deccanherald.com/sites/dh/files/styles/article_detail/public/article_images/2020/05/19/604513-2135246437-1491282148.jpg?itok=ER-C7ogn');
 
     protected userInSession: any;
 
@@ -44,6 +44,7 @@ export class UserService {
         let user = new User(userFromWeb3.name,
                             userFromWeb3.bio,
                       'https://mysupercoolipfs.infura-ipfs.io/ipfs/' + userFromWeb3.avatar);
+        user.address = userFromWeb3.owner; //TODO this can be done better
         return user;
     }
 

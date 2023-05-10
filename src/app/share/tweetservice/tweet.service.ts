@@ -41,7 +41,32 @@ export class TweetService {
             returnValue.push(tweet);
         });
         return returnValue;
-
     }
+
+    public async getTweetsForCurrentUser(): Promise<Tweet[]> {
+
+        let returnValue: Tweet[] = [];
+        let user = await this.userService.getUserInSession();
+        let tweets = await this.web3Service.getAllTweets();
+        console.log(user);
+        tweets.forEach( async (tweetData: any) => {
+            if(tweetData.author === user.address) {
+                let tweet = new Tweet();
+                tweet.message = tweetData.tweetText;
+                tweet.image = tweetData.tweetImage;
+                tweet.date = new Date(tweetData.date * 1000);
+                let authorAddress = tweetData.author;
+                let user = await this.userService.getUser(authorAddress);
+                tweet.author = user;
+                returnValue.push(tweet);
+            }
+        });
+        returnValue = returnValue.filter((tweet) => tweet.author?.name.toLowerCase() === 'noir');
+        console.log(returnValue);
+        //TODO why this does not work?
+        console.log(returnValue.filter((tweet) => tweet.author?.name.toLowerCase() === 'noir'));
+        return returnValue;
+    }
+
 
 }
